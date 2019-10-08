@@ -8,6 +8,28 @@ let sameName = ((elem, name) => elem.element(by.name('nomelist')).getText().then
 
 let pAND = ((p,q) => p.then(a => q.then(b => a && b)))
 
+async function criarAluno(name, cpf) {
+    await $("input[name='namebox']").sendKeys(<string> name);
+    await $("input[name='cpfbox']").sendKeys(<string> cpf);
+    await element(by.buttonText('Adicionar')).click();
+}
+
+async function assertTamanhoEqual(set,n) {
+    await set.then(elems => expect(Promise.resolve(elems.length)).to.eventually.equal(n));
+}
+
+async function assertElementsWithSameCPFAndName(n,cpf,name) { 
+    var allalunos : ElementArrayFinder = element.all(by.name('alunolist'));
+    var samecpfsandname = allalunos.filter(elem => pAND(sameCPF(elem,cpf),sameName(elem,name)));
+    await assertTamanhoEqual(samecpfsandname,n);
+}
+
+async function assertElementsWithSameCPF(n,cpf) {
+    var allalunos : ElementArrayFinder = element.all(by.name('alunolist'));
+    var samecpfs = allalunos.filter(elem => sameCPF(elem,cpf));
+    await assertTamanhoEqual(samecpfs,n); 
+}
+
 defineSupportCode(function ({ Given, When, Then }) {
     Given(/^I am at the students page$/, async () => {
         await browser.get("http://localhost:4200/");
@@ -16,10 +38,7 @@ defineSupportCode(function ({ Given, When, Then }) {
     })
 
     Given(/^I cannot see a student with CPF "(\d*)" in the students list$/, async (cpf) => {
-        var allcpfs : ElementArrayFinder = element.all(by.name('cpflist'));
-        var samecpfs = allcpfs.filter(elem =>
-                                      elem.getText().then(text => text === cpf));
-        await samecpfs.then(elems => expect(Promise.resolve(elems.length)).to.eventually.equal(0));
+        await assertElementsWithSameCPF(0,cpf);
     });
 
     When(/^I try to register the student "([^\"]*)" with CPF "(\d*)"$/, async (name, cpf) => {
@@ -29,9 +48,25 @@ defineSupportCode(function ({ Given, When, Then }) {
     });
 
     Then(/^I can see "([^\"]*)" with CPF "(\d*)" in the students list$/, async (name, cpf) => {
-        var allalunos : ElementArrayFinder = element.all(by.name('alunolist'));
-        await allalunos.filter(elem => pAND(sameCPF(elem,cpf),sameName(elem,name))).then
-                   (elems => expect(Promise.resolve(elems.length)).to.eventually.equal(1));
+        await assertElementsWithSameCPF(1,cpf); 
+        await assertElementsWithSameCPFAndName(1,cpf,name);
     });
 
+    When(/^I try to delete the student with CPF "(\d*)"$/, async (cpf) => {
+        await $(`button[name='${cpf}']`).click();
+    });
+
+    Given(/^I can see a student with CPF "(\d*)" in the students list$/, async (cpf) => {
+        await criarAluno("Clarissa",cpf);
+        await assertElementsWithSameCPF(1,cpf); 
+    });
+
+    Then(/^I cannot see "([^\"]*)" with CPF "(\d*)" in the students list$/, async (name, cpf) => {
+        await assertElementsWithSameCPFAndName(0,cpf,name);
+    });
+
+    Then(/^I can see an error message$/, async () => {
+        var allmsgs : ElementArrayFinder = element.all(by.name('msgcpfexistente'));
+        await assertTamanhoEqual(allmsgs,1);
+    });
 })
