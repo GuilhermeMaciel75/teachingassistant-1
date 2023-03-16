@@ -12,7 +12,7 @@ import { AlunoService } from './aluno.service';
  export class MetasComponent implements OnInit {
     constructor(private alunoService: AlunoService) {}
 
-    alunos: Aluno[];
+    alunos: Aluno[] = [];
 
     atualizarAluno(aluno: Aluno): void {
        this.alunoService.atualizar(aluno);
