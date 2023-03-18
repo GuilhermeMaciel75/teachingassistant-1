@@ -17,7 +17,6 @@ export class Aluno {
 
   clone(): Aluno {
     var aluno: Aluno = new Aluno();
-    aluno.metas = {};
     aluno.copyFrom(this);
     return aluno;
   }
