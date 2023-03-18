@@ -1,5 +1,5 @@
 import express = require('express');
-import bodyParser = require("body-parser");
+import bodyParser = require('body-parser');
 
 import {Aluno} from '../../gui/ta-gui/src/app/aluno';
 import {CadastroDeAlunos} from './cadastrodealunos';
@@ -18,7 +18,7 @@ app.use(allowCrossDomain);
 
 app.use(bodyParser.json());
 
-app.get('/alunos', function (req, res) {
+app.get('/alunos', function (req:any, res:any) {
   res.send(JSON.stringify(cadastro.getAlunos()));
 })
 
