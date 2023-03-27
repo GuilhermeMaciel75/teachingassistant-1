@@ -38,7 +38,7 @@ app.put('/aluno', function (req: express.Request, res: express.Response) {
   if (aluno) {
     res.send({"success": "O aluno foi atualizado com sucesso"});
   } else {
-    res.send({"failure": "O aluno não pode ser atualizado"});
+        
   }
 })
 

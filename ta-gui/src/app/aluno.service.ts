@@ -13,7 +13,7 @@ export class AlunoService {
 
   constructor(private http: HttpClient) {}
 
-  criar(aluno: Aluno): Observable<Aluno> {
+  criar(aluno: Aluno){
     return this.http.post<any>(this.taURL + "/aluno", aluno, {headers: this.headers})
              .pipe( 
                 retry(2),
@@ -21,7 +21,7 @@ export class AlunoService {
               ); 
   }
 
-  atualizar(aluno: Aluno): Observable<Aluno> {
+  atualizar(aluno: Aluno) {
     return this.http.put<any>(this.taURL + "/aluno",JSON.stringify(aluno), {headers: this.headers})          .pipe( 
                 retry(2),
                 map( res => {if (res.success) {return aluno;} else {return null;}} )
