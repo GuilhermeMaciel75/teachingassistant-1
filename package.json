@@ -1,0 +1,20 @@
+{
+  "name": "teachingassistant-1",
+  "version": "1.0.0",
+  "description": "projeto exemplo da disciplina de ESS da graduação em Ciência da Computação do CIn-UFPE",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@angular-devkit/build-angular": "^15.2.4",
+    "@angular/core": "^15.2.4",
+    "@angular/forms": "^15.2.4",
+    "@angular/platform-browser": "^15.2.4",
+    "@angular/platform-browser-dynamic": "^15.2.4",
+    "@angular/router": "^15.2.4",
+    "typescript": "^4.9.5"
+  }
+}

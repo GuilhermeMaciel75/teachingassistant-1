@@ -27,7 +27,6 @@ import { AlunoService } from './aluno.service';
                   } 
                 },
                 msg => { alert(msg.message); }
-                
               );
     } 
 
