@@ -42,4 +42,16 @@ import { AlunoService } from './aluno.service';
               );
      }
 
+     deleteAluno(a: Aluno): void {
+      this.alunoService.remover(a)
+              .subscribe(
+                ar => {
+                  if (ar) {
+                    this.alunos.splice(this.alunos.findIndex(((aluno) => aluno == a)), 1);
+                  }
+                },
+                msg => {alert(msg.message);}
+              );
+    }
+
   }
